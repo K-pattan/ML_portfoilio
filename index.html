@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spaceship Titanic Portfolio</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">🚀 Spaceship Titanic</div>
+
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#objective">Objectives</a></li>
+        <li><a href="#dataset">Dataset</a></li>
+        <li><a href="#preprocessing">Preprocessing</a></li>
+        <li><a href="#eda">EDA</a></li>
+        <li><a href="#feature">Features</a></li>
+        <li><a href="#models">Models</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#learning">Learnings</a></li>
+    </ul>
+</nav>
+
+<section id="home" class="hero">
+
+    <div class="hero-content">
+
+        <span class="tag">
+            Machine Learning Portfolio
+        </span>
+
+        <h1>
+            Spaceship Titanic
+            <span>Prediction Using ML</span>
+        </h1>
+
+        <p>
+            End-to-End Machine Learning project using KNN Imputation,
+            Feature Engineering, XGBoost and LightGBM.
+        </p>
+
+        <a href="#objective" class="btn">
+            Explore Project
+        </a>
+
+    </div>
+
+</section>
+
+<section id="objective">
+
+<h2>Project Objectives</h2>
+
+<div class="card">
+
+<p>
+Predict whether a passenger was transported to another dimension
+during the Spaceship Titanic accident.
+</p>
+
+<ul>
+<li>Perform Data Cleaning</li>
+<li>Handle Missing Values</li>
+<li>Engineer New Features</li>
+<li>Train Multiple Models</li>
+<li>Compare Performance</li>
+<li>Generate Kaggle Submission</li>
+</ul>
+
+</div>
+
+</section>
+
+<section id="dataset">
+
+<h2>Dataset Overview</h2>
+
+<div class="stats">
+
+<div class="stat-card">
+<h3>8693</h3>
+<p>Training Records</p>
+</div>
+
+<div class="stat-card">
+<h3>4277</h3>
+<p>Test Records</p>
+</div>
+
+<div class="stat-card">
+<h3>14</h3>
+<p>Features</p>
+</div>
+
+<div class="stat-card">
+<h3>Binary</h3>
+<p>Classification</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="preprocessing">
+
+<h2>Data Preprocessing</h2>
+
+<div class="card">
+
+<h3>Cabin Feature Extraction</h3>
+
+<p>
+Split Cabin into Deck, Number and Side.
+</p>
+
+<pre>
+B/123/P
+
+↓
+
+Deck = B
+Number = 123
+Side = P
+</pre>
+
+<h3>KNN Imputation</h3>
+
+<p>
+Missing values were handled using KNN Imputer.
+</p>
+
+<code>
+KNNImputer()
+</code>
+
+</div>
+
+</section>
+
+<section id="eda">
+
+<h2>Exploratory Data Analysis</h2>
+
+<div class="gallery">
+
+<img src="assets/missing_values.png">
+<img src="assets/age_distribution.png">
+<img src="assets/homeplanet_distribution.png">
+<img src="assets/correlation_heatmap.png">
+
+</div>
+
+</section>
+
+<section id="feature">
+
+<h2>Feature Engineering</h2>
+
+<div class="card">
+
+<h3>Total Spending Feature</h3>
+
+<pre>
+RoomService +
+FoodCourt +
+ShoppingMall +
+Spa +
+VRDeck
+↓
+TotalSpend
+</pre>
+
+<p>
+Additional features:
+</p>
+
+<ul>
+<li>Mean Spending</li>
+<li>Spending Standard Deviation</li>
+<li>High Probability Features</li>
+<li>Low Probability Features</li>
+</ul>
+
+</div>
+
+</section>
+
+<section id="models">
+
+<h2>Models Used</h2>
+
+<div class="grid">
+
+<div class="model-card">Logistic Regression</div>
+<div class="model-card">Decision Tree</div>
+<div class="model-card">Random Forest</div>
+<div class="model-card">XGBoost</div>
+<div class="model-card">LightGBM</div>
+
+</div>
+
+</section>
+
+<section id="results">
+
+<h2>Results & Evaluation</h2>
+
+<div class="gallery">
+
+<img src="assets/accuracy_comparison.png">
+<img src="assets/confusion_matrix.png">
+<img src="assets/feature_importance.png">
+<img src="assets/roc_curve.png">
+
+</div>
+
+<div class="card">
+
+<h3>Best Model</h3>
+
+<p>
+LightGBM achieved the best performance after feature engineering
+and preprocessing.
+</p>
+
+</div>
+
+</section>
+
+<section id="learning">
+
+<h2>Learnings & Conclusion</h2>
+
+<div class="card">
+
+<ul>
+<li>Data Cleaning</li>
+<li>KNN Imputation</li>
+<li>Feature Engineering</li>
+<li>Machine Learning Pipelines</li>
+<li>Model Evaluation</li>
+<li>Kaggle Workflow</li>
+</ul>
+
+<p>
+This project demonstrates a complete machine learning lifecycle
+from preprocessing to final prediction.
+</p>
+
+</div>
+
+</section>
+
+<footer>
+Made by Your Name | Machine Learning Portfolio
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
