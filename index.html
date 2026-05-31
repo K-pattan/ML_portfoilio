@@ -557,14 +557,226 @@ group spends significantly more.
 </section>
 
 <!-- FEATURE ENGINEERING -->
-
 <section id="feature">
 
 <h2>Feature Engineering</h2>
 
 <div class="card">
 
-<h3>Total Spending Feature</h3>
+<h3>What is Feature Engineering?</h3>
+
+<p>
+Feature Engineering is the process of creating meaningful features
+from existing data to improve machine learning model performance.
+Well-designed features help models discover hidden patterns and
+increase prediction accuracy.
+</p>
+
+</div>
+
+<br>
+
+<!-- Cabin Splitting -->
+
+<div class="card">
+
+<h3>A. Cabin Feature Splitting</h3>
+
+<p>
+The Cabin column contained multiple pieces of information in a
+single feature. It was split into three separate components.
+</p>
+
+<pre>
+B/123/P
+
+↓
+
+Deck = B
+Num  = 123
+Side = P
+</pre>
+
+<h4>Code Snippet</h4>
+
+<pre>
+df[['Deck', 'Num', 'Side']] =
+df['Cabin'].str.split('/', expand=True)
+
+df = df.drop(columns=['Cabin'])
+
+df['Deck'] = df['Deck'].fillna('U')
+df['Num'] = df['Num'].fillna(-1)
+df['Side'] = df['Side'].fillna('U')
+</pre>
+
+<p>
+Purpose: Extract more useful information from cabin data.
+</p>
+
+</div>
+
+<br>
+
+<!-- Deck Encoding -->
+
+<div class="card">
+
+<h3>B. Deck and Side Encoding</h3>
+
+<p>
+The extracted cabin features were converted into numerical values
+to make them suitable for machine learning algorithms.
+</p>
+
+<h4>Code Snippet</h4>
+
+<pre>
+df['Deck'] = df['Deck'].map({
+'G':0,'F':1,'E':2,'D':3,
+'C':4,'B':5,'A':6,
+'U':7,'T':8
+})
+
+df['Side'] = df['Side'].map({
+'U':-1,
+'P':1,
+'S':2
+})
+</pre>
+
+<p>
+Purpose: Convert categorical cabin information into machine-readable
+numerical values.
+</p>
+
+</div>
+
+<br>
+
+<!-- Missing Values -->
+
+<div class="card">
+
+<h3>C. Missing Value Handling using KNN Imputer</h3>
+
+<p>
+Several features contained missing values. Instead of using mean
+or median replacement, KNN Imputer was used to estimate values
+based on similar passengers.
+</p>
+
+<h4>Code Snippet</h4>
+
+<pre>
+impute_lis = [
+'Age','VIP','Num',
+'CryoSleep','Side','Deck',
+'RoomService','FoodCourt',
+'ShoppingMall','Spa','VRDeck'
+]
+
+rest = list(
+set(df.columns) -
+set(impute_lis)
+)
+</pre>
+
+<pre>
+imp = KNNImputer()
+
+df_imputed = imp.fit_transform(
+df[impute_lis]
+)
+
+df_imputed = pd.DataFrame(
+df_imputed,
+columns=impute_lis
+)
+</pre>
+
+<p>
+Purpose: Preserve data relationships and reduce information loss.
+</p>
+
+</div>
+
+<br>
+
+<!-- One Hot Encoding -->
+
+<div class="card">
+
+<h3>D. One-Hot Encoding</h3>
+
+<p>
+Machine learning models require numerical inputs. Therefore,
+categorical features were converted into binary columns.
+</p>
+
+<h4>Code Snippet</h4>
+
+<pre>
+df['HomePlanet'] =
+df['HomePlanet'].fillna('U')
+
+df['Destination'] =
+df['Destination'].fillna('U')
+
+category_colls = [
+'HomePlanet',
+'Destination'
+]
+
+for col in category_colls:
+
+    df = pd.concat(
+    [
+        df,
+        pd.get_dummies(
+        df[col],
+        prefix=col
+        )
+    ],
+    axis=1
+    )
+</pre>
+
+<h4>Example</h4>
+
+<pre>
+HomePlanet
+
+Earth
+Europa
+Mars
+
+↓
+
+HomePlanet_Earth
+HomePlanet_Europa
+HomePlanet_Mars
+</pre>
+
+<p>
+Purpose: Prevents the model from assuming an incorrect order
+between categories.
+</p>
+
+</div>
+
+<br>
+
+<!-- Spending Features -->
+
+<div class="card">
+
+<h3>E. Spending Features</h3>
+
+<p>
+Spending-related columns were combined to create richer
+representations of passenger behavior.
+</p>
 
 <pre>
 RoomService
@@ -576,16 +788,49 @@ ShoppingMall
 Spa
 +
 VRDeck
-↓
-TotalSpend
+      ↓
+
+Total Spending
 </pre>
 
+<p>
+Additional engineered features included:
+</p>
+
 <ul>
+<li>Total Spending</li>
 <li>Mean Spending</li>
-<li>Spending Standard Deviation</li>
+<li>Spending Variation</li>
 <li>High Probability Features</li>
 <li>Low Probability Features</li>
 </ul>
+
+</div>
+
+<br>
+
+<!-- Workflow -->
+
+<div class="card">
+
+<h3>Feature Engineering Workflow</h3>
+
+<pre>
+Raw Dataset
+      ↓
+Cabin Splitting
+      ↓
+Deck & Side Encoding
+      ↓
+Missing Value Handling
+(KNN Imputer)
+      ↓
+One-Hot Encoding
+      ↓
+Spending Features
+      ↓
+Final Dataset
+</pre>
 
 </div>
 
@@ -595,17 +840,87 @@ TotalSpend
 
 <section id="models">
 
-<h2>Models Used</h2>
+<h2>Model Building</h2>
 
-<div class="grid">
+<div class="card">
 
-<div class="model-card">Logistic Regression</div>
-<div class="model-card">Decision Tree</div>
-<div class="model-card">Random Forest</div>
-<div class="model-card">XGBoost</div>
-<div class="model-card">LightGBM</div>
+<h3>What is Model Building?</h3>
+
+<p>
+Model Building is the process of training Machine Learning algorithms
+using prepared data so that the model can learn patterns and make
+accurate predictions on unseen data.
+</p>
 
 </div>
+
+<br>
+
+<div class="card">
+
+<h3>Machine Learning Models Used</h3>
+
+<table class="model-table">
+
+<tr>
+<th>Model</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>Logistic Regression</td>
+<td>Basic Classification Model</td>
+</tr>
+
+<tr>
+<td>Decision Tree</td>
+<td>Tree-Based Prediction</td>
+</tr>
+
+<tr>
+<td>Random Forest</td>
+<td>Ensemble Learning Method</td>
+</tr>
+
+<tr>
+<td>XGBoost</td>
+<td>Advanced Boosting Algorithm</td>
+</tr>
+
+<tr>
+<td>LightGBM</td>
+<td>Fast Gradient Boosting Model</td>
+</tr>
+
+</table>
+
+</div>
+
+<br>
+
+<div class="card">
+
+<h3>Model Training Workflow</h3>
+
+<pre>
+Preprocessed Dataset
+          ↓
+Train-Test Split
+          ↓
+Model Training
+(Logistic Regression,
+Decision Tree,
+Random Forest,
+XGBoost,
+LightGBM)
+          ↓
+Performance Evaluation
+          ↓
+Best Model Selection
+</pre>
+
+</div>
+
 
 </section>
 
@@ -613,35 +928,78 @@ TotalSpend
 
 <section id="results">
 
-<h2>Results & Evaluation</h2>
-
-<div class="gallery">
-
-<img src="assets/accuracy_comparison.png" alt="Accuracy Comparison">
-<img src="assets/confusion_matrix.png" alt="Confusion Matrix">
-<img src="assets/feature_importance.png" alt="Feature Importance">
-<img src="assets/roc_curve.png" alt="ROC Curve">
-
-</div>
+<h2>Model Evaluation</h2>
 
 <div class="card">
 
-<h3>Best Model</h3>
+<h3>Performance Comparison</h3>
+
+<table class="model-table">
+
+<tr>
+<th>Model</th>
+<th>Accuracy</th>
+</tr>
+
+<tr>
+<td>Logistic Regression</td>
+<td>77.06%</td>
+</tr>
+
+<tr>
+<td>Decision Tree</td>
+<td>74.35%</td>
+</tr>
+
+<tr>
+<td>Random Forest</td>
+<td>79.13%</td>
+</tr>
+
+<tr>
+<td>XGBoost</td>
+<td>79.41%</td>
+</tr>
+
+<tr>
+<td>LightGBM</td>
+<td>79.70%</td>
+</tr>
+
+</table>
+
+</div>
+
+<br>
+
+<div class="card">
+
+<h3>Accuracy Comparison Chart</h3>
+
+<img
+src="https://uploads.onecompiler.io/445vtyxqe/44qwbv4rq/modelacc.png"
+alt="Model Accuracy Comparison"
+class="analysis-image">
+
+</div>
+
+<br>
+
+<div class="card">
+
+<h3>Inference</h3>
 
 <p>
-LightGBM achieved the highest performance after preprocessing
-and feature engineering.
+LightGBM achieved the highest accuracy of
+<strong>79.70%</strong>, making it the best-performing
+model for the Spaceship Titanic prediction task.
 </p>
 
-</div>
-
-<div class="card">
-
-<h3>Conclusion</h3>
-
 <p>
-The project successfully demonstrates an end-to-end machine
-learning pipeline for classification problems.
+The boosting-based models (XGBoost and LightGBM)
+outperformed traditional machine learning models,
+demonstrating their ability to capture complex
+relationships within the dataset.
 </p>
 
 </div>
